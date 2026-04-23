@@ -1,23 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5">
+    android:background="#F2F2F7">
 
-    <!-- SwipeRefreshLayout envolve o RecyclerView -->
-    <!-- O gesto de puxar para baixo só funciona na lista -->
+    <!-- Header com gradiente roxo/indigo -->
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:orientation="vertical"
+        android:gravity="bottom"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:paddingBottom="24dp"
+        android:background="@drawable/bg_header_gradient">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Contatos"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:fontFamily="sans-serif-medium"/>
+
+    </LinearLayout>
+
+    <!-- Conteúdo principal -->
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="140dp"
         android:visibility="gone">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingVertical="8dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="24dp"
+            android:paddingHorizontal="16dp"
             android:clipToPadding="false"/>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
@@ -34,15 +60,16 @@
 
         <ProgressBar
             android:layout_width="48dp"
-            android:layout_height="48dp"/>
+            android:layout_height="48dp"
+            android:indeterminateTint="#5C6BC0"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="Carregando usuários..."
+            android:text="Carregando contatos..."
             android:textSize="14sp"
-            android:textColor="#666666"/>
+            android:textColor="#8E8E93"/>
 
     </LinearLayout>
 
@@ -70,7 +97,7 @@
             android:text="Algo deu errado"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="#333333"/>
+            android:textColor="#1C1C1E"/>
 
         <TextView
             android:id="@+id/tvError"
@@ -78,7 +105,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:textSize="14sp"
-            android:textColor="#666666"
+            android:textColor="#8E8E93"
             android:gravity="center"/>
 
         <com.google.android.material.button.MaterialButton
@@ -87,8 +114,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="Tentar novamente"
-            android:paddingHorizontal="24dp"/>
+            android:paddingHorizontal="24dp"
+            app:backgroundTint="#5C6BC0"
+            app:cornerRadius="12dp"/>
 
     </LinearLayout>
 
-</FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
