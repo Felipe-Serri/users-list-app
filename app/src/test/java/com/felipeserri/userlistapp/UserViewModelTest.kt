@@ -1,18 +1,14 @@
 package com.felipeserri.userlistapp
 
-import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.felipeserri.userlistapp.model.Address
 import com.felipeserri.userlistapp.model.Company
 import com.felipeserri.userlistapp.model.UiState
 import com.felipeserri.userlistapp.model.User
 import com.felipeserri.userlistapp.repository.UserRepository
-import com.felipeserri.userlistapp.utils.NetworkUtils
 import com.felipeserri.userlistapp.viewmodel.UserViewModel
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
-import io.mockk.mockkObject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -34,11 +30,8 @@ class UserViewModelTest {
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private val testDispatcher = StandardTestDispatcher()
+
     private val repository = mockk<UserRepository>()
-
-    // Mock do Context — simula o Context sem precisar de um dispositivo Android
-    private val mockContext = mockk<Context>(relaxed = true)
-
     private lateinit var viewModel: UserViewModel
 
     private val fakeUsers = listOf(
@@ -57,8 +50,6 @@ class UserViewModelTest {
     @Before
     fun setup() {
         Dispatchers.setMain(testDispatcher)
-        mockkObject(NetworkUtils)
-        every { NetworkUtils.isNetworkAvailable(any()) } returns true
     }
 
     @After
@@ -68,11 +59,10 @@ class UserViewModelTest {
 
     @Test
     fun `quando repository retorna sucesso, estado deve ser Success com a lista`() = runTest {
-
         coEvery { repository.getUsers() } returns Result.success(fakeUsers)
 
         viewModel = UserViewModel(repository)
-        viewModel.fetchUsers(mockContext)
+        viewModel.fetchUsers()
         advanceUntilIdle()
 
         val state = viewModel.uiState.value
@@ -85,12 +75,11 @@ class UserViewModelTest {
 
     @Test
     fun `quando repository retorna erro, estado deve ser Error com a mensagem`() = runTest {
-
         val errorMessage = "Sem conexão com a internet"
         coEvery { repository.getUsers() } returns Result.failure(Exception(errorMessage))
 
         viewModel = UserViewModel(repository)
-        viewModel.fetchUsers(mockContext)
+        viewModel.fetchUsers()
         advanceUntilIdle()
 
         val state = viewModel.uiState.value
@@ -102,11 +91,10 @@ class UserViewModelTest {
 
     @Test
     fun `quando repository retorna sucesso, lista nao deve estar vazia`() = runTest {
-
         coEvery { repository.getUsers() } returns Result.success(fakeUsers)
 
         viewModel = UserViewModel(repository)
-        viewModel.fetchUsers(mockContext)
+        viewModel.fetchUsers()
         advanceUntilIdle()
 
         val state = viewModel.uiState.value as UiState.Success
