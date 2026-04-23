@@ -1,3 +1,4 @@
+// ui/UserAdapter.kt
 package com.felipeserri.userlistapp.ui
 
 import android.view.LayoutInflater
@@ -10,23 +11,22 @@ class UserAdapter(
     private val users: List<User>,
     private val onUserClick: (User) -> Unit
 ) : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
+
     inner class UserViewHolder(private val binding: ItemUserBinding)
         : RecyclerView.ViewHolder(binding.root) {
+
         fun bind(user: User) {
-            binding.tvName.text = user.name
+            binding.tvName.text  = user.name
             binding.tvEmail.text = user.email
-            binding.root.setOnClickListener {
-                onUserClick(user)
-            }
+            // ✅ Inicial do nome no avatar
+            binding.tvAvatar.text = user.name.first().uppercaseChar().toString()
+            binding.root.setOnClickListener { onUserClick(user) }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
-
         val binding = ItemUserBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
+            LayoutInflater.from(parent.context), parent, false
         )
         return UserViewHolder(binding)
     }
